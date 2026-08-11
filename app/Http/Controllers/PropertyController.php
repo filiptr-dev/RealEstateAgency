@@ -17,7 +17,19 @@ class PropertyController extends Controller
             ->paginate(9)
             ->withQueryString();
 
-        return view('properties.index', compact('properties'));
+        $mapProperties = Property::published()
+            ->whereNotNull('lat')
+            ->whereNotNull('lng')
+            ->get(['id', 'title', 'price_cents', 'lat', 'lng', 'slug'])
+            ->map(fn ($p) => [
+                'lat' => (float) $p->lat,
+                'lng' => (float) $p->lng,
+                'title' => $p->title,
+                'price' => $p->priceFormatted,
+                'url' => route('properties.show', $p),
+            ]);
+
+        return view('properties.index', compact('properties', 'mapProperties'));
     }
 
     public function show(Property $property)
