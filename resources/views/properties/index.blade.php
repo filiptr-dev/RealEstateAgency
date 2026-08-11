@@ -34,7 +34,7 @@
 @endpush
 
 @push('scripts')
-<script>window.mapProperties = {!! json_encode($mapProperties) !!};</script>
+<script>window.mapProperties = {!! json_encode($mapProperties, JSON_HEX_TAG) !!};</script>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV/XN/WPeI=" crossorigin=""></script>
 <script>
 $(document).ready(function () {
@@ -48,7 +48,7 @@ $(document).ready(function () {
         L.marker([p.lat, p.lng])
             .addTo(map)
             .bindPopup(
-                '<strong>' + p.title + '</strong><br>' +
+                '<strong>' + p.title.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</strong><br>' +
                 p.price + '<br>' +
                 '<a href="' + p.url + '">View property &rarr;</a>'
             );
