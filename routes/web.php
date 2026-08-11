@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AboutController;
 use App\Http\Controllers\Admin;
+use App\Http\Controllers\AgentsController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Panel\PropertyPrefillController;
@@ -18,6 +19,8 @@ Route::get('/properties/{property:slug}', [PropertyController::class, 'show'])->
 Route::get('/about', [AboutController::class, 'show'])->name('about');
 
 Route::get('/services', [ServicesController::class, 'show'])->name('services');
+
+Route::get('/agents', [AgentsController::class, 'index'])->name('agents');
 
 Route::get('/contact', [ContactController::class, 'create'])->name('contact.create');
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
