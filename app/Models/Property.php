@@ -24,6 +24,7 @@ class Property extends Model
         'agent_id', 'title', 'slug', 'description', 'type', 'status',
         'price_cents', 'bedrooms', 'bathrooms', 'size_acres',
         'address', 'zip', 'city', 'country', 'area',
+        'lat', 'lng',
         'features', 'nearby', 'is_featured', 'published_at',
     ];
 
@@ -40,6 +41,8 @@ class Property extends Model
             'bedrooms' => 'integer',
             'bathrooms' => 'integer',
             'size_acres' => 'decimal:2',
+            'lat' => 'decimal:7',
+            'lng' => 'decimal:7',
         ];
     }
 

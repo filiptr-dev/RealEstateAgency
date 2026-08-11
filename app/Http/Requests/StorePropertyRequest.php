@@ -47,6 +47,8 @@ class StorePropertyRequest extends FormRequest
             'city' => ['required', 'string', 'max:120'],
             'country' => ['required', 'string', 'max:120'],
             'area' => ['nullable', 'string', 'max:120'],
+            'lat' => ['nullable', 'numeric', 'between:-90,90'],
+            'lng' => ['nullable', 'numeric', 'between:-180,180'],
             'features' => ['nullable', 'array'],
             'features.*' => ['string', 'max:120'],
             'nearby' => ['nullable', 'array'],
