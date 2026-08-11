@@ -82,7 +82,7 @@
                                     </div>
                                     <div class="team-detail">
                                         <h6>{{ $agent->name }}</h6>
-                                        <p>{{ ucfirst($agent->role) }}</p>
+                                        <p>{{ $agent->role->label() }}</p>
                                     </div>
                                 </div>
                             </li>
