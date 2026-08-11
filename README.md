@@ -1,58 +1,129 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Real Estate Agency
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A full-featured real estate listing platform for a boutique agency operating across North Macedonia and the wider Balkans. Visitors can browse for-sale and for-rent listings, filter by city, price, and property type, view detailed listings with a photo gallery, and contact the agent handling a property. Agents manage their own portfolios; admins oversee the full catalog, all agents, and every incoming enquiry.
 
-## About Laravel
+## Features
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- **Public catalog** — browse and filter properties by city, type (sale / rent), status (apartment, house, villa, land), bedroom / bathroom counts, and price range.
+- **Listing detail** — full description, photo gallery with cover image, features list, nearby points of interest, and the assigned agent's contact card.
+- **Contact submissions** — visitors send an enquiry against a listing; the assigned agent and admins are notified.
+- **Agent dashboard** — each agent manages the properties assigned to them (create, edit, publish, upload photos).
+- **Admin dashboard** — full oversight of users, properties, and contact submissions across the platform.
+- **Role-based auth** — three roles (`admin`, `agent`, `user`) with route- and policy-level protection.
+- **EUR pricing** — prices stored as integer cents to avoid float rounding; formatted `€` on display.
+- **Soft deletes** on properties so removed listings can be restored and slugs stay unique across the trash.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Tech Stack
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- **Laravel 12** on PHP 8.3+
+- **Blade** views with **Tailwind CSS** and **Vite**
+- **MySQL** via **Laravel Sail** (Docker)
+- **Pest** for tests
+- **Spatie MediaLibrary conventions** applied directly to `storage/app/public/properties/{id}/` (no separate media package required)
 
-## Learning Laravel
+## Roles and Permissions
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+| Role  | Can do                                                                                    |
+|-------|-------------------------------------------------------------------------------------------|
+| admin | Manage all users, all properties, all contact submissions; assign agents to listings.     |
+| agent | Manage only the properties assigned to them; view enquiries against their own listings.   |
+| user  | Browse listings, submit contact enquiries, manage their own profile.                      |
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Prerequisites
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+- Docker and Docker Compose (Sail ships its own PHP / MySQL / Redis containers)
+- Node.js 20+ and npm (for Vite asset builds)
+- Git
 
-## Agentic Development
+No local PHP or MySQL installation is required — everything runs inside Sail.
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+## Getting Started
 
 ```bash
-composer require laravel/boost --dev
+# 1. Clone and enter the project
+git clone <this-repo> real-estate-agency-app
+cd real-estate-agency-app
 
-php artisan boost:install
+# 2. Install PHP dependencies (uses a throwaway container so no local PHP needed)
+docker run --rm \
+    -u "$(id -u):$(id -g)" \
+    -v "$(pwd):/var/www/html" \
+    -w /var/www/html \
+    laravelsail/php83-composer:latest \
+    composer install --ignore-platform-reqs
+
+# 3. Environment
+cp .env.example .env
+
+# 4. Bring up the Sail stack (app, MySQL, Redis)
+./vendor/bin/sail up -d
+
+# 5. Generate the app key
+./vendor/bin/sail artisan key:generate
+
+# 6. Run migrations and seed demo data (15 listings + test accounts + photos)
+./vendor/bin/sail artisan migrate --seed
+
+# 7. Publish the storage symlink so uploaded photos are web-accessible
+./vendor/bin/sail artisan storage:link
+
+# 8. Install and build front-end assets
+./vendor/bin/sail npm install
+./vendor/bin/sail npm run dev
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+The app is now available at [http://localhost](http://localhost).
 
-## Contributing
+## Test Accounts
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+The seeder provisions four accounts. All use the password `password` (the second agent included for portfolio-diversity testing).
 
-## Code of Conduct
+| Role  | Email                | Password | Notes                                      |
+|-------|----------------------|----------|--------------------------------------------|
+| admin | admin@example.com    | password | Full platform access                       |
+| agent | agent@example.com    | password | Jane Smith — residential + commercial      |
+| agent | agent2@example.com   | password | Marko Petrov — villas + lakeside           |
+| user  | user@example.com     | password | Regular visitor account                    |
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Re-running `sail artisan migrate:fresh --seed` (or just `sail artisan db:seed`) is idempotent: properties, photos, and contact submissions are wiped and re-created; users are upserted so their IDs and passwords stay stable.
 
-## Security Vulnerabilities
+## Running Tests
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```bash
+./vendor/bin/sail test
+```
+
+Tests run against an in-memory SQLite database configured in `phpunit.xml` — they never touch your development MySQL data.
+
+## Project Structure
+
+```
+app/
+├── Enums/                  # PropertyType, PropertyStatus, UserRole
+├── Http/
+│   ├── Controllers/        # Thin controllers, delegate to models/queries
+│   ├── Middleware/         # Role-guarding middleware
+│   └── Requests/           # Form request validation
+├── Models/                 # Property, PropertyPhoto, User, ContactSubmission
+└── Policies/               # Property + submission policies
+database/
+├── factories/              # Test-data factories
+├── migrations/             # Schema
+└── seeders/DatabaseSeeder  # 15 realistic demo listings + 4 test users
+resources/
+├── views/                  # Blade templates (public + dashboards)
+└── css/                    # Tailwind entry
+public/images/              # Static template imagery (bundled with the app)
+storage/app/public/properties/{id}/   # Uploaded and seeded listing photos
+tests/
+├── Feature/                # HTTP + auth + role tests
+└── Unit/                   # Model/enum tests
+```
+
+## Photo Storage
+
+Listing photos live under `storage/app/public/properties/{property_id}/` and are served via the public storage symlink at `public/storage/properties/{property_id}/...`. The seeder copies a rotating selection of bundled template images from `public/images/` into each seeded property's directory so the gallery has real content out of the box — no external asset fetch is performed during seeding.
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Proprietary — internal to the agency. Do not redistribute.
