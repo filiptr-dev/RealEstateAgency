@@ -22,16 +22,24 @@
                 <span>|</span>
             </li>
         </ul>
+        {{-- Right-bar social icons — ported verbatim from 02-Homepage-02.html:50–55 --}}
+        <ul class="right-bar-side social_icons">
+            <li class="facebook"><a href="#."><i class="fa fa-facebook"></i></a></li>
+            <li class="twitter"><a href="#."><i class="fa fa-twitter"></i></a></li>
+            <li class="linkedin"><a href="#."><i class="fa fa-linkedin"></i></a></li>
+            <li class="tumblr"><a href="#."><i class="fa fa-tumblr"></i></a></li>
+        </ul>
     </div>
 </div>
 
 <header class="sticky">
     <div class="container">
-        <div class="logo"><a href="{{ route('home') }}"><strong style="font-size:24px;color:#fff;">Realtor</strong></a></div>
+        <div class="logo"><a href="{{ route('home') }}"><img src="{{ asset('images/logo.png') }}" alt="Realtor"></a></div>
         <nav>
             <ul class="ownmenu">
                 <li class="{{ request()->routeIs('home') ? 'active' : '' }}"><a href="{{ route('home') }}">Home</a></li>
                 <li class="{{ request()->routeIs('properties.*') ? 'active' : '' }}"><a href="{{ route('properties.index') }}">Properties</a></li>
+                <li class="{{ request()->routeIs('about') ? 'active' : '' }}"><a href="{{ route('about') }}">About</a></li>
                 <li class="{{ request()->routeIs('contact.*') ? 'active' : '' }}"><a href="{{ route('contact.create') }}">Contact us</a></li>
                 @auth
                     @if(auth()->user()->isAdmin() || auth()->user()->isAgent())
@@ -39,6 +47,8 @@
                     @endif
                 @endauth
             </ul>
+            {{-- Search icon — ported verbatim from 02-Homepage-02.html:117 --}}
+            <div class="sub-nav-co"><a href="#."><i class="fa fa-search"></i></a></div>
         </nav>
     </div>
 </header>

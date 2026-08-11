@@ -1,4 +1,23 @@
 @csrf
+
+{{-- Prefill from URL — best-effort scrape of OG tags + a couple of common patterns. --}}
+<div class="row" style="margin-bottom:20px;">
+    <div class="col-sm-12">
+        <div class="panel panel-default">
+            <div class="panel-heading"><strong>Prefill from listing URL (optional)</strong></div>
+            <div class="panel-body">
+                <div class="input-group">
+                    <input type="text" id="prefill-url" class="form-control" placeholder="https://example.com/listing/123">
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" id="prefill-btn">Prefill</button>
+                    </span>
+                </div>
+                <small class="text-muted">Best-effort: works on sites that expose listing data in page meta tags. JS-heavy portals may return nothing.</small>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="row">
     <div class="col-sm-8">
         <div class="form-group">
@@ -111,8 +130,61 @@
             <small>New photo index for cover (0-based):</small>
             <input type="number" min="0" name="cover_index" value="{{ old('cover_index') }}" class="form-control">
         </div>
+
+        <div class="form-group" style="margin-top:10px;">
+            <label>Add photos by URL (one per line)</label>
+            <textarea name="photo_urls" rows="4" class="form-control" placeholder="https://example.com/photo.jpg">{{ is_array(old('photo_urls')) ? implode("\n", old('photo_urls')) : old('photo_urls') }}</textarea>
+            <small class="text-muted">We'll fetch and store these alongside your uploads. Files are processed first, then URLs — cover index applies across both.</small>
+        </div>
     </div>
 </div>
 
 <button type="submit" class="btn btn-primary" style="margin-top:20px;">Save</button>
 <a href="{{ route('panel.properties.index') }}" class="btn">Cancel</a>
+
+<script>
+(function () {
+    var btn = document.getElementById('prefill-btn');
+    if (!btn) return;
+    btn.addEventListener('click', function () {
+        var input = document.getElementById('prefill-url');
+        var url = input.value.trim();
+        if (!url) return;
+        btn.disabled = true;
+        var originalLabel = btn.textContent;
+        btn.textContent = 'Fetching…';
+        fetch('{{ route('panel.properties.prefill') }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: JSON.stringify({ url: url })
+        })
+        .then(function (r) { return r.json(); })
+        .then(function (data) {
+            // Only overwrite fields that come back non-null — don't clobber what the user typed.
+            var map = {
+                title: '[name="title"]',
+                description: '[name="description"]',
+                price: '[name="price"]',
+                beds: '[name="bedrooms"]',
+                baths: '[name="bathrooms"]',
+                address: '[name="address"]'
+            };
+            Object.keys(map).forEach(function (k) {
+                if (data && data[k] != null && data[k] !== '') {
+                    var el = document.querySelector(map[k]);
+                    if (el) el.value = data[k];
+                }
+            });
+        })
+        .catch(function () { alert('Prefill failed — check the URL and try again.'); })
+        .finally(function () {
+            btn.disabled = false;
+            btn.textContent = originalLabel;
+        });
+    });
+})();
+</script>

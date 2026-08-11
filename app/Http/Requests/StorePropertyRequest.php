@@ -21,6 +21,14 @@ class StorePropertyRequest extends FormRequest
             $features = array_values(array_filter(array_map('trim', $lines), fn ($v) => $v !== ''));
             $this->merge(['features' => $features]);
         }
+
+        // photo_urls comes in as a textarea (one URL per line); normalise to an array
+        // BEFORE validation so the `photo_urls.*` rules can fire on each entry.
+        if ($this->filled('photo_urls') && is_string($this->input('photo_urls'))) {
+            $lines = preg_split('/\r?\n/', (string) $this->input('photo_urls'));
+            $urls = array_values(array_filter(array_map('trim', $lines), fn ($v) => $v !== ''));
+            $this->merge(['photo_urls' => $urls]);
+        }
     }
 
     public function rules(): array
@@ -48,6 +56,8 @@ class StorePropertyRequest extends FormRequest
             'published' => ['nullable', 'boolean'],
             'photos' => ['nullable', 'array'],
             'photos.*' => ['image', 'max:4096', 'mimes:jpg,jpeg,png,webp'],
+            'photo_urls' => ['nullable', 'array'],
+            'photo_urls.*' => ['url', 'max:2048'],
             'cover_index' => ['nullable', 'integer', 'min:0'],
             'delete_photo_ids' => ['nullable', 'array'],
             'delete_photo_ids.*' => ['integer'],

@@ -41,14 +41,17 @@ class PropertyController extends Controller
 
         $coverIndex = $request->filled('cover_index') ? (int) $request->input('cover_index') : null;
 
-        $this->syncPhotos->handle(
+        $skipped = $this->syncPhotos->handle(
             $property,
             $request->file('photos', []),
             $coverIndex,
             (array) $request->input('delete_photo_ids', []),
+            (array) $request->input('photo_urls', []),
         );
 
-        return redirect()->route('panel.properties.index')->with('status', 'Property created.');
+        return redirect()->route('panel.properties.index')
+            ->with('status', 'Property created.')
+            ->with('warning', $this->skippedFlash($skipped));
     }
 
     public function edit(Property $property)
@@ -67,14 +70,17 @@ class PropertyController extends Controller
 
         $coverIndex = $request->filled('cover_index') ? (int) $request->input('cover_index') : null;
 
-        $this->syncPhotos->handle(
+        $skipped = $this->syncPhotos->handle(
             $property,
             $request->file('photos', []),
             $coverIndex,
             (array) $request->input('delete_photo_ids', []),
+            (array) $request->input('photo_urls', []),
         );
 
-        return redirect()->route('panel.properties.index')->with('status', 'Property updated.');
+        return redirect()->route('panel.properties.index')
+            ->with('status', 'Property updated.')
+            ->with('warning', $this->skippedFlash($skipped));
     }
 
     public function destroy(Property $property)
@@ -83,6 +89,18 @@ class PropertyController extends Controller
         $property->delete();
 
         return redirect()->route('panel.properties.index')->with('status', 'Property deleted.');
+    }
+
+    /**
+     * @param  array<int, string>  $skipped
+     */
+    private function skippedFlash(array $skipped): ?string
+    {
+        if (empty($skipped)) {
+            return null;
+        }
+
+        return 'Could not fetch '.count($skipped).' photo URL(s) — they were skipped.';
     }
 
     private function fill(Property $property, array $data, Request $request): void

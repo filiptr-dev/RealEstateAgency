@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\AboutController;
 use App\Http\Controllers\Admin;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Panel\PropertyPrefillController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PropertyController;
 use Illuminate\Support\Facades\Route;
@@ -11,6 +13,8 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::get('/properties', [PropertyController::class, 'index'])->name('properties.index');
 Route::get('/properties/{property:slug}', [PropertyController::class, 'show'])->name('properties.show');
+
+Route::get('/about', [AboutController::class, 'show'])->name('about');
 
 Route::get('/contact', [ContactController::class, 'create'])->name('contact.create');
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
@@ -37,6 +41,8 @@ Route::middleware(['auth', 'role:admin,agent'])
     ->name('panel.')
     ->group(function () {
         Route::get('/', [Admin\DashboardController::class, 'index'])->name('dashboard');
+        // Registered BEFORE the resource so `properties/prefill` isn't shadowed by `properties/{property}`.
+        Route::post('properties/prefill', [PropertyPrefillController::class, 'fetch'])->name('properties.prefill');
         Route::resource('properties', Admin\PropertyController::class)->except(['show']);
         Route::get('inquiries', [Admin\InquiryController::class, 'index'])->name('inquiries.index');
         Route::get('inquiries/{submission}', [Admin\InquiryController::class, 'show'])->name('inquiries.show');

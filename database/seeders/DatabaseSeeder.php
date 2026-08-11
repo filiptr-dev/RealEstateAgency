@@ -10,10 +10,36 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Storage;
+use Throwable;
 
 class DatabaseSeeder extends Seeder
 {
+    /**
+     * Stable Unsplash photo IDs used to seed realistic listing imagery.
+     * The URL pattern `images.unsplash.com/photo-{id}` returns the raw image,
+     * so we can save it directly to the public disk without an API key.
+     */
+    private const PHOTO_IDS = [
+        '1564013799919-ab600027ffc6', // modern living room
+        '1600596542815-ffad4c1539a9', // house exterior
+        '1512917774080-9991f1c4c750', // luxury home
+        '1560184897-ae75f418493e',    // apartment interior
+        '1493809842364-78817add7ffb', // cozy living space
+        '1571460149396-84b0d1e64cb1', // kitchen
+        '1484154218962-a197022b5858', // bedroom
+        '1600607687939-ce8a6c25118c', // modern kitchen
+        '1604014237800-1c9102c219da', // pool villa
+        '1558618666-fcd25c85cd64',    // terrace
+        '1613490493576-4d03d3299386', // luxury apartment
+        '1568605114967-8130f3a36994', // house with garden
+        '1583608205776-bfd35f0d9f83', // suburban home
+        '1598928506311-c55ded91a20c', // modern bathroom
+        '1596436508249-61fd99b596a8', // cozy bedroom
+    ];
+
     public function run(): void
     {
         // Idempotency: wipe listings and their child rows so re-seeding is safe.
@@ -325,30 +351,58 @@ class DatabaseSeeder extends Seeder
             $properties->push(Property::create($record));
         }
 
-        // ---- Copy photos & create PropertyPhoto rows --------------------------
-        if (! empty($photoPool)) {
-            $poolCount = count($photoPool);
-            foreach ($properties as $i => $property) {
-                $storageDir = storage_path("app/public/properties/{$property->id}");
-                if (! is_dir($storageDir)) {
-                    File::makeDirectory($storageDir, 0755, true);
+        // ---- Fetch photos from Unsplash (with offline fallback) --------------
+        //
+        // Strategy: try to grab a real Unsplash image over HTTP; if that fails
+        // (offline env, DNS, timeout), fall back to copying a bundled template
+        // image so seeding still succeeds. Either way we always create the
+        // PropertyPhoto rows so the DB state is deterministic.
+        $disk = Storage::disk('public');
+        $photoIds = self::PHOTO_IDS;
+        $photoIdCount = count($photoIds);
+        $poolCount = count($photoPool);
+
+        foreach ($properties as $i => $property) {
+            $storageDir = storage_path("app/public/properties/{$property->id}");
+            if (! is_dir($storageDir)) {
+                File::makeDirectory($storageDir, 0755, true);
+            }
+
+            for ($n = 0; $n < 3; $n++) {
+                $filename = "img-{$n}.jpg";
+                $relPath = "properties/{$property->id}/{$filename}";
+                $absPath = $storageDir.DIRECTORY_SEPARATOR.$filename;
+
+                $written = false;
+
+                // Try Unsplash first.
+                $photoId = $photoIds[($i * 3 + $n) % $photoIdCount];
+                $url = "https://images.unsplash.com/photo-{$photoId}?w=1200&q=80&fit=crop";
+                try {
+                    $response = Http::timeout(15)->get($url);
+                    if ($response->successful() && $response->body() !== '') {
+                        $disk->put($relPath, $response->body());
+                        $written = true;
+                    }
+                } catch (Throwable $e) {
+                    // swallow — we'll fall back to the bundled image below
                 }
 
-                for ($n = 0; $n < 3; $n++) {
+                // Fallback: copy a bundled template image so offline seeds still work.
+                if (! $written && $poolCount > 0) {
                     $sourceName = $photoPool[($i * 3 + $n) % $poolCount];
                     $src = $publicImages.DIRECTORY_SEPARATOR.$sourceName;
-                    $filename = "img-{$n}.jpg";
-                    $dst = $storageDir.DIRECTORY_SEPARATOR.$filename;
-                    if (is_file($src) && ! file_exists($dst)) {
-                        @copy($src, $dst);
+                    if (is_file($src) && ! file_exists($absPath)) {
+                        @copy($src, $absPath);
                     }
-                    PropertyPhoto::create([
-                        'property_id' => $property->id,
-                        'path' => "properties/{$property->id}/{$filename}",
-                        'is_cover' => $n === 0,
-                        'sort_order' => $n,
-                    ]);
                 }
+
+                PropertyPhoto::create([
+                    'property_id' => $property->id,
+                    'path' => $relPath,
+                    'is_cover' => $n === 0,
+                    'sort_order' => $n,
+                ]);
             }
         }
 
