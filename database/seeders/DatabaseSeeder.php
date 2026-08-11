@@ -29,7 +29,7 @@ class DatabaseSeeder extends Seeder
         if (is_dir($propertiesDir)) {
             File::deleteDirectory($propertiesDir);
         }
-        File::makeDirectory($propertiesDir, 0755, true);
+        File::makeDirectory($propertiesDir, 0755, true, true);
 
         // ---- Users -------------------------------------------------------------
         User::updateOrCreate(
