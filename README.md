@@ -15,11 +15,10 @@ A full-featured real estate listing platform for a boutique agency operating acr
 
 ## Tech Stack
 
-- **Laravel 12** on PHP 8.3+
+- **Laravel 13** on PHP 8.3+
 - **Blade** views with **Tailwind CSS** and **Vite**
 - **MySQL** via **Laravel Sail** (Docker)
-- **Pest** for tests
-- **Spatie MediaLibrary conventions** applied directly to `storage/app/public/properties/{id}/` (no separate media package required)
+- **PHPUnit** for tests
 
 ## Roles and Permissions
 
