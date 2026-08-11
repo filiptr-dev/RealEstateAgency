@@ -42,6 +42,7 @@
                 <li class="{{ request()->routeIs('services') ? 'active' : '' }}"><a href="{{ route('services') }}">Services</a></li>
                 <li class="{{ request()->routeIs('properties.*') ? 'active' : '' }}"><a href="{{ route('properties.index') }}">Properties</a></li>
                 <li class="{{ request()->routeIs('agents') ? 'active' : '' }}"><a href="{{ route('agents') }}">Our Agents</a></li>
+                <li class="{{ request()->routeIs('blog.*') ? 'active' : '' }}"><a href="{{ route('blog.index') }}">Blog</a></li>
                 <li class="{{ request()->routeIs('contact.*') ? 'active' : '' }}"><a href="{{ route('contact.create') }}">Contact us</a></li>
                 @auth
                     @if(auth()->user()->isAdmin() || auth()->user()->isAgent())
