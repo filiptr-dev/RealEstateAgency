@@ -29,13 +29,8 @@
 </section>
 @endsection
 
-@push('styles')
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
-@endpush
-
 @push('scripts')
 <script>window.mapProperties = {!! json_encode($mapProperties, JSON_HEX_TAG) !!};</script>
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV/XN/WPeI=" crossorigin=""></script>
 <script>
 $(document).ready(function () {
     if (!document.getElementById('propertyMap')) return;
