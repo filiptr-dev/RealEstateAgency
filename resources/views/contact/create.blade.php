@@ -3,9 +3,18 @@
 @section('title', 'Contact us')
 
 @section('content')
-<section class="inner-banner" style="background:#333;padding:80px 0;color:#fff;text-align:center;">
-    <div class="container"><h1>Contact Us</h1></div>
-</section>
+<div class="sub-banner">
+    <div class="overlay">
+        <div class="container">
+            <h1>Contact Us</h1>
+            <ol class="breadcrumb">
+                <li class="pull-left">contact</li>
+                <li><a href="{{ route('home') }}">Home</a></li>
+                <li class="active">Contact Us</li>
+            </ol>
+        </div>
+    </div>
+</div>
 
 <section style="padding:60px 0;">
     <div class="container">
@@ -13,6 +22,7 @@
 
         <div class="row">
             <div class="col-sm-8">
+                <div class="tittle"><img src="{{ asset('images/head-top.png') }}" alt=""></div>
                 <h3>Send us a message</h3>
                 <form method="POST" action="{{ route('contact.store') }}">
                     @csrf
