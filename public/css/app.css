@@ -39,3 +39,9 @@ footer { padding-top: 60px; }
     display: table;
     clear: both;
 }
+
+/* --- Batch 5, Issue 1: services card — confine absolute overlays inside the card, not the column --- */
+.services li section {
+    position: relative;
+    overflow: hidden;
+}
