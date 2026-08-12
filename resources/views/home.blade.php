@@ -45,6 +45,18 @@
     </div>
 </section>
 
+@if($mapProperties->isNotEmpty())
+<section style="padding:40px 0 0;">
+    <div class="container">
+        <div class="tittle">
+            <h3>Properties on the map</h3>
+            <p>Browse our portfolio geographically.</p>
+        </div>
+        <div id="homeMap" style="height:450px;margin-bottom:30px;"></div>
+    </div>
+</section>
+@endif
+
 <section class="services">
     <div class="container">
         <div class="tittle">
@@ -88,3 +100,35 @@
     </div>
 </section>
 @endsection
+
+@push('styles')
+@if($mapProperties->isNotEmpty())
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+@endif
+@endpush
+
+@push('scripts')
+@if($mapProperties->isNotEmpty())
+<script>window.homeMapProperties = {!! json_encode($mapProperties, JSON_HEX_TAG) !!};</script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV/XN/WPeI=" crossorigin=""></script>
+<script>
+$(document).ready(function () {
+    if (!document.getElementById('homeMap')) return;
+    var map = L.map('homeMap').setView([41.6, 21.7], 7);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        maxZoom: 19
+    }).addTo(map);
+    (window.homeMapProperties || []).forEach(function (p) {
+        L.marker([p.lat, p.lng])
+            .addTo(map)
+            .bindPopup(
+                '<strong>' + p.title.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</strong><br>' +
+                p.price + '<br>' +
+                '<a href="' + p.url + '">View property &rarr;</a>'
+            );
+    });
+});
+</script>
+@endif
+@endpush
