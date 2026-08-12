@@ -29,7 +29,7 @@
 <section class="properti-detsil register">
     <div class="container">
         <div class="row">
-            <div class="col-sm-9 col-sm-offset-1">
+            <div class="col-sm-9">
                 <div class="row">
 
                     {{-- LOGIN pane — 11-Register.html:146–168 --}}

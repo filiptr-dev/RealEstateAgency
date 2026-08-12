@@ -32,3 +32,10 @@ footer { padding-top: 60px; }
 /* --- Batch 3: map + filter stacking --- */
 .find-sec { position: relative; z-index: 10; }
 #propertyMap { position: relative; z-index: 1; }
+
+/* --- Batch 5, Issue 4: clear floated button + forgot-link inside submit li --- */
+.regi-sec li:last-child::after {
+    content: '';
+    display: table;
+    clear: both;
+}
