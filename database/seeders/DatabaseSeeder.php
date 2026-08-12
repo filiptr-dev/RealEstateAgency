@@ -387,6 +387,40 @@ class DatabaseSeeder extends Seeder
             $a->update(['photo_path' => 'storage/'.$rel]);
         }
 
+        // ---- Static section images (services / blog cards / avatars) ----------
+        // Unlike agent/property photos, these are plain public/images/*.jpg
+        // files referenced directly in Blade views via asset('images/...'),
+        // not DB-backed paths — so we overwrite them in place. Same
+        // download-first strategy as above; on failure we simply leave the
+        // existing bundled file untouched (same fallback behaviour as the
+        // property-photo loop below).
+        $staticImageSeeds = [
+            'service-img-1.jpg' => ['seed' => 'service-1', 'w' => 600, 'h' => 400],
+            'service-img-2.jpg' => ['seed' => 'service-2', 'w' => 600, 'h' => 400],
+            'service-img-3.jpg' => ['seed' => 'service-3', 'w' => 600, 'h' => 400],
+            'service-img-4.jpg' => ['seed' => 'service-4', 'w' => 600, 'h' => 400],
+            'b-img-1.jpg' => ['seed' => 'blog-1', 'w' => 800, 'h' => 500],
+            'b-img-2.jpg' => ['seed' => 'blog-2', 'w' => 800, 'h' => 500],
+            'b-img-3.jpg' => ['seed' => 'blog-3', 'w' => 800, 'h' => 500],
+            'b-img-4.jpg' => ['seed' => 'blog-4', 'w' => 800, 'h' => 500],
+            'b-img-5.jpg' => ['seed' => 'blog-5', 'w' => 800, 'h' => 500],
+            'avatar-1.jpg' => ['seed' => 'avatar-1', 'w' => 100, 'h' => 100],
+            'avatar-2.jpg' => ['seed' => 'avatar-2', 'w' => 100, 'h' => 100],
+            'avatar-3.jpg' => ['seed' => 'avatar-3', 'w' => 100, 'h' => 100],
+        ];
+
+        foreach ($staticImageSeeds as $filename => $spec) {
+            $absPath = $publicImages.DIRECTORY_SEPARATOR.$filename;
+            try {
+                $response = Http::timeout(15)->get("https://picsum.photos/seed/{$spec['seed']}/{$spec['w']}/{$spec['h']}");
+                if ($response->successful() && $response->body() !== '') {
+                    File::put($absPath, $response->body());
+                }
+            } catch (Throwable $e) {
+                // leave the existing bundled file untouched
+            }
+        }
+
         foreach ($properties as $i => $property) {
             $storageDir = storage_path("app/public/properties/{$property->id}");
             if (! is_dir($storageDir)) {
@@ -474,7 +508,7 @@ class DatabaseSeeder extends Seeder
                 'excerpt' => $data['excerpt'],
                 'body' => $data['body'],
                 'category' => $data['category'],
-                'featured_image' => 'https://picsum.photos/seed/blog-'.($index + 1).'/800/500',
+                'featured_image' => 'images/b-img-'.(($index % 5) + 1).'.jpg',
                 'author_id' => $index % 2 === 0 ? $agent->id : $agent2->id,
                 'published_at' => Carbon::now()->subDays($index * 7 + rand(0, 6)),
             ]);

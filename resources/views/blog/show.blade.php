@@ -29,7 +29,7 @@
                                 <li class="col-sm-12">
                                     @if($post->featured_image)
                                         <div class="b-inner">
-                                            <img class="img-responsive" src="{{ $post->featured_image }}" alt="{{ $post->title }}" style="width:100%;height:auto;object-fit:cover;">
+                                            <img class="img-responsive" src="{{ asset($post->featured_image) }}" alt="{{ $post->title }}" style="width:100%;height:auto;object-fit:cover;">
                                             <div class="b-details">
                                                 <div class="bottom-sec">
                                                     <span><i class="fa fa-calendar"></i> {{ $post->published_at->format('M d, Y') }}</span>

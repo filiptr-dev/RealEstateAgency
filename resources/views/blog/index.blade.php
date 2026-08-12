@@ -27,7 +27,7 @@
                                 <li class="col-sm-12">
                                     <div class="b-inner">
                                         @if($post->featured_image)
-                                            <img class="img-responsive" src="{{ $post->featured_image }}" alt="{{ $post->title }}" style="height:260px;width:100%;object-fit:cover;">
+                                            <img class="img-responsive" src="{{ asset($post->featured_image) }}" alt="{{ $post->title }}" style="height:260px;width:100%;object-fit:cover;">
                                         @endif
                                         <div class="b-details">
                                             <div class="bottom-sec">
