@@ -9,7 +9,7 @@ class BlogController extends Controller
 {
     public function index()
     {
-        $posts = Post::published()->latest('published_at')->paginate(6);
+        $posts = Post::published()->with('author')->latest('published_at')->paginate(6);
         $categories = Post::published()->select('category')->distinct()->pluck('category');
         $recentPosts = Post::published()->latest('published_at')->take(3)->get();
 

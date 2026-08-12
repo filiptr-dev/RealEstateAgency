@@ -56,4 +56,15 @@ class User extends Authenticatable
     {
         return $this->role === UserRole::User;
     }
+
+    public function photoUrl(): string
+    {
+        if (! $this->photo_path) {
+            return asset('images/agent-1.jpg');
+        }
+
+        return str_starts_with($this->photo_path, 'http')
+            ? $this->photo_path
+            : asset($this->photo_path);
+    }
 }

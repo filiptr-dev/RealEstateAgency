@@ -37,7 +37,7 @@
                                         </div>
                                     </div>
                                     <div class="post-admin">
-                                        <img src="{{ asset('images/auther-1.jpg') }}" alt="">
+                                        <img src="{{ $post->author?->photoUrl() ?? asset('images/agent-1.jpg') }}" alt="{{ $post->author?->name ?? 'Staff' }}">
                                         <h6>By {{ $post->author?->name ?? 'Staff' }}</h6>
                                         <div class="pull-right margin-t-20">
                                             <span><i class="fa fa-comment-o"></i> {{ $post->comments->count() }} Comments</span> |
