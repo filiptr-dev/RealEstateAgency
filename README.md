@@ -12,6 +12,7 @@ A full-featured real estate listing platform for a boutique agency operating acr
 - **Role-based auth** — three roles (`admin`, `agent`, `user`) with route- and policy-level protection.
 - **EUR pricing** — prices stored as integer cents to avoid float rounding; formatted `€` on display.
 - **Soft deletes** on properties so removed listings can be restored and slugs stay unique across the trash.
+- **OpenStreetMap listings map** — Leaflet-powered map on the listing page with per-property markers.
 
 ## Tech Stack
 
