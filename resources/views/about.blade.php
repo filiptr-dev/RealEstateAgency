@@ -67,7 +67,7 @@
                         @foreach($pair as $agent)
                             @php
                                 $photo = $agent->photo_path
-                                    ? asset($agent->photo_path)
+                                    ? (str_starts_with($agent->photo_path, 'http') ? $agent->photo_path : asset($agent->photo_path))
                                     : asset('images/agent-1.jpg');
                             @endphp
                             <li class="col-sm-6">
