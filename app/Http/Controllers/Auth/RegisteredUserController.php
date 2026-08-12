@@ -10,6 +10,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rules;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
@@ -35,7 +36,18 @@ class RegisteredUserController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'photo' => ['nullable', 'image', 'max:4096'],
+            'photo_url' => ['nullable', 'url', 'max:2048'],
         ]);
+
+        // Uploaded file wins over a pasted URL (task 8 — dual-mode profile photo).
+        $photoPath = null;
+        if ($request->hasFile('photo') && $request->file('photo')->isValid()) {
+            $stored = $request->file('photo')->store('profile-photos/'.Str::ulid(), 'public');
+            $photoPath = 'storage/'.$stored;
+        } elseif ($request->filled('photo_url')) {
+            $photoPath = $request->photo_url;
+        }
 
         // All self-registrations land as 'user'. Agent role is admin-granted only.
         $user = User::create([
@@ -43,6 +55,7 @@ class RegisteredUserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'role' => UserRole::User->value,
+            'photo_path' => $photoPath,
         ]);
 
         event(new Registered($user));

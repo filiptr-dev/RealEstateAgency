@@ -74,7 +74,7 @@
                     <div class="col-sm-6">
                         <div class="regi-sec">
                             <span class="regi-tag">register</span>
-                            <form method="POST" action="{{ route('register') }}">
+                            <form method="POST" action="{{ route('register') }}" enctype="multipart/form-data">
                                 @csrf
                                 <ul>
                                     <li>
@@ -100,6 +100,14 @@
                                             <input type="password" name="password_confirmation" required autocomplete="new-password">
                                         </label>
                                         <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
+                                    </li>
+                                    <li>
+                                        <label>PROFILE PHOTO (optional)</label>
+                                        <p style="font-size:0.875em;color:#888;margin-bottom:4px;">Upload a file <strong>or</strong> paste a URL — we use whichever you provide.</p>
+                                        <input id="photo" name="photo" type="file" accept="image/*">
+                                        <x-input-error :messages="$errors->get('photo')" class="mt-2" />
+                                        <input id="photo_url" name="photo_url" type="url" placeholder="https://..." value="{{ old('photo_url') }}" style="margin-top:8px;">
+                                        <x-input-error :messages="$errors->get('photo_url')" class="mt-2" />
                                     </li>
                                     <li>
                                         <button type="submit" class="btn">Signup</button>
