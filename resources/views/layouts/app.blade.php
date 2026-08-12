@@ -66,6 +66,10 @@
 <script src="{{ asset('js/bootstrap-select.js') }}"></script>
 <script src="{{ asset('js/jquery.flexslider-min.js') }}"></script>
 <script src="{{ asset('js/jquery.sticky.js') }}"></script>
+<script src="{{ asset('js/own-menu.js') }}"></script>
+<script src="{{ asset('js/owl.carousel.min.js') }}"></script>
+<script src="{{ asset('js/wow.min.js') }}"></script>
+<script src="{{ asset('js/jquery.stellar.js') }}"></script>
 <script src="{{ asset('js/main.js') }}"></script>
 @stack('scripts')
 </body>

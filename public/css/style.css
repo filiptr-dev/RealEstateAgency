@@ -2200,7 +2200,7 @@ ul.dropdown li:hover {
 			SUB BANNER
 ========================================================*/
 .sub-banner {
-	background: url(../images/sub-bnr-bg.jpg) top center fixed no-repeat;
+	background: #2b2b2b;
 	position: relative;
 	margin-top: -5px;
 	background-size: cover;
@@ -4385,7 +4385,7 @@ ul.dropdown li:hover {
 	width: 100%;
 }
 .register .regi-tag {
-	background: url(../images/registr-tag.png) no-repeat;
+	background: #4caf50;
 	width: 165px;
 	height: 43px;
 	display: inline-block;

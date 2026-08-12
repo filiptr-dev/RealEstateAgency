@@ -3,8 +3,8 @@
 @section('title', 'Realtor — Find Your Home')
 
 @section('content')
-<div id="banner" style="background:#333;">
-    <img src="{{ asset('images/slider-img-1.jpg') }}" alt="" style="width:100%;display:block;opacity:0.8;">
+<div id="banner">
+    <div id="homeMap"></div>
     <div class="finder">
         <div class="container">
             <h1>Welcome to Realtor</h1>
@@ -44,18 +44,6 @@
         </ul>
     </div>
 </section>
-
-@if($mapProperties->isNotEmpty())
-<section style="padding:40px 0 0;">
-    <div class="container">
-        <div class="tittle">
-            <h3>Properties on the map</h3>
-            <p>Browse our portfolio geographically.</p>
-        </div>
-        <div id="homeMap" style="height:450px;margin-bottom:30px;"></div>
-    </div>
-</section>
-@endif
 
 <section class="services">
     <div class="container">
@@ -102,13 +90,10 @@
 @endsection
 
 @push('styles')
-@if($mapProperties->isNotEmpty())
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
-@endif
 @endpush
 
 @push('scripts')
-@if($mapProperties->isNotEmpty())
 <script>window.homeMapProperties = {!! json_encode($mapProperties, JSON_HEX_TAG) !!};</script>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV/XN/WPeI=" crossorigin=""></script>
 <script>
@@ -119,16 +104,19 @@ $(document).ready(function () {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
         maxZoom: 19
     }).addTo(map);
+    var markers = [];
     (window.homeMapProperties || []).forEach(function (p) {
-        L.marker([p.lat, p.lng])
+        markers.push(L.marker([p.lat, p.lng])
             .addTo(map)
             .bindPopup(
                 '<strong>' + p.title.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</strong><br>' +
                 p.price + '<br>' +
                 '<a href="' + p.url + '">View property &rarr;</a>'
-            );
+            ));
     });
+    if (markers.length) {
+        map.fitBounds(L.featureGroup(markers).getBounds(), {padding: [30, 30], maxZoom: 14});
+    }
 });
 </script>
-@endif
 @endpush
