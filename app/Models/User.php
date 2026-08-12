@@ -32,6 +32,16 @@ class User extends Authenticatable
         return $this->hasMany(Property::class, 'agent_id');
     }
 
+    public function posts(): HasMany
+    {
+        return $this->hasMany(Post::class, 'author_id');
+    }
+
+    public function comments(): HasMany
+    {
+        return $this->hasMany(Comment::class);
+    }
+
     public function isAdmin(): bool
     {
         return $this->role === UserRole::Admin;

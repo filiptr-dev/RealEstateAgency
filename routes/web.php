@@ -23,10 +23,11 @@ Route::get('/services', [ServicesController::class, 'show'])->name('services');
 
 Route::get('/agents', [AgentsController::class, 'index'])->name('agents');
 
-// Blog is static in v1 (no Post model / no CMS). Route names still used
-// everywhere so a future dynamic upgrade is a URL-compatible swap.
 Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
-Route::get('/blog/sample-post', [BlogController::class, 'show'])->name('blog.show');
+Route::get('/blog/{post:slug}', [BlogController::class, 'show'])->name('blog.show');
+Route::post('/blog/{post:slug}/comments', [BlogController::class, 'storeComment'])
+    ->middleware('auth')
+    ->name('blog.comments.store');
 
 Route::get('/contact', [ContactController::class, 'create'])->name('contact.create');
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');

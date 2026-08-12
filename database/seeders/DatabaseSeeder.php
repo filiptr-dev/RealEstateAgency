@@ -2,7 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\Comment;
 use App\Models\ContactSubmission;
+use App\Models\Post;
 use App\Models\Property;
 use App\Models\PropertyPhoto;
 use App\Models\User;
@@ -432,5 +434,50 @@ class DatabaseSeeder extends Seeder
         ContactSubmission::factory()->count(3)->create([
             'property_id' => $properties->random()->id,
         ]);
+
+        // ---- Blog posts -------------------------------------------------------
+        Schema::disableForeignKeyConstraints();
+        Comment::truncate();
+        Post::truncate();
+        Schema::enableForeignKeyConstraints();
+
+        $postData = [
+            ['title' => '5 Things Every First-Time Buyer Should Know', 'category' => 'Buying',
+                'excerpt' => 'Buying your first home is one of the largest financial decisions you will ever make.',
+                'body' => "Buying your first home can feel overwhelming, but breaking it into clear steps makes it manageable.\n\nFirst, get pre-approved for a mortgage before you start viewing properties — knowing your budget saves time and signals to sellers that you are serious. Second, don't skip the inspection; even new builds have issues that only a qualified surveyor will catch. Third, factor in all costs beyond the purchase price: notary fees, agent commissions, property transfer taxes, and moving costs can add 5–8% to the headline price.\n\nFourth, think about the neighbourhood as much as the property itself — proximity to schools, transport links, and green space will affect your resale value more than the kitchen worktops. Finally, be patient. The right property appears when it appears; the ones that stay on the market for months are usually overpriced or hiding a problem."],
+            ['title' => 'How to Price Your Home to Sell in 30 Days', 'category' => 'Selling',
+                'excerpt' => 'Setting the right asking price is the single most important decision you will make as a seller.',
+                'body' => "Overpricing is the number one reason homes sit unsold. Buyers and their agents track days-on-market obsessively — a listing that has been available for two months carries a stigma that knocks 5–10% off what you can realistically achieve at closing.\n\nThe right approach: pull comparable sales (same neighbourhood, similar size, sold within the last 90 days) and price at or just below the median. If you receive multiple offers in the first week, you priced correctly. If the phone goes silent, your price is the problem, not the market.\n\nPresentation matters too: a professional photographer, a clean and decluttered interior, and an honest description will generate more qualified viewings than a higher asking price with poor photos."],
+            ['title' => 'Why Lakeside Properties Hold Their Value', 'category' => 'Investing',
+                'excerpt' => 'Water-adjacent real estate has historically outperformed the broader market. Here is why.',
+                'body' => "Scarcity is the primary driver. There is a finite amount of lakeside or riverfront land, and supply cannot increase to meet demand the way it can for standard residential plots. This is especially true for protected shorelines like Lake Ohrid, where development restrictions keep new supply extremely limited.\n\nThe second driver is international demand. Lakeside properties attract buyers from multiple countries, which insulates values from purely local economic downturns. A recession that reduces domestic purchasing power may have little effect if foreign buyers remain interested.\n\nFinally, lifestyle trends post-2020 have accelerated demand for properties outside city centres with access to nature — a shift that real estate economists expect to be structural rather than temporary."],
+            ['title' => 'The Investor\'s Guide to North Macedonia Real Estate', 'category' => 'Market Trends',
+                'excerpt' => 'A practical overview of the market for buyers considering North Macedonia for the first time.',
+                'body' => "North Macedonia offers some of the most accessible entry points for real estate investment in the Western Balkans. Apartment prices in Skopje's central districts range from €1,000–1,800 per square metre — significantly below comparable cities in Slovenia or Croatia.\n\nRental yields in the capital run between 5–7% gross for well-located residential units, driven partly by a growing expatriate community and a student population that prefers the private rental market. Ohrid and Struga command premium prices for tourist-season rentals.\n\nThe legal framework for foreign ownership is straightforward for EU and most non-EU nationals; a notary-registered purchase contract is the primary document. Property transfer tax is 2% of the assessed value. Always engage a local lawyer for due diligence — the cadastre system is reliable but checking for encumbrances requires access to official registers."],
+            ['title' => 'Kitchen Upgrades That Add Real Resale Value', 'category' => 'Home Tips',
+                'excerpt' => 'Not every renovation pays for itself. Focus on the upgrades buyers actually value.',
+                'body' => "The kitchen is the room buyers scrutinise most. A tired kitchen can drop an offer by 10%; a smart renovation can recover that and more. But not all upgrades are equal.\n\nHigh-return moves: replace cabinet doors and hardware without touching the carcases (fraction of the cost of a full refit); install a new worktop in stone or engineered stone (buyers notice); upgrade the tap and add a decent extractor fan.\n\nLow-return moves: bespoke appliances that a buyer may not want; custom cabinetry that pushes the kitchen cost above neighbourhood comparables; removing walls to create an open-plan space without checking structural implications first.\n\nThe rule of thumb: keep the kitchen's total renovation cost below 10% of the home's value. Above that, you are spending for your own enjoyment, not for resale."],
+            ['title' => "Understanding Rental Yields: A Beginner's Guide", 'category' => 'Investing',
+                'excerpt' => 'Gross yield, net yield, and cash-on-cash return — what they mean and which one to trust.',
+                'body' => "Rental yield is the annual rent expressed as a percentage of the property's purchase price. Gross yield ignores all costs; net yield deducts management fees, maintenance, insurance, and periods of vacancy.\n\nA 6% gross yield might become 3.5–4% net once you factor in a 10% management fee, an annual maintenance allowance of 1% of property value, building insurance, and two months of vacancy per year. Net yield is the number that actually tells you whether the investment makes sense.\n\nCash-on-cash return goes further: it measures your annual income as a percentage of the cash you personally invested (after mortgage financing). If you put 30% down and finance the rest, your cash-on-cash return will be higher than your net yield — which is the fundamental appeal of leveraged property investment."],
+            ['title' => 'What to Inspect Before Signing Any Property Contract', 'category' => 'Buying',
+                'excerpt' => 'Due diligence on a property purchase starts long before the notary appointment.',
+                'body' => "Title check: confirm the seller is the registered owner and that the property is free of encumbrances, mortgages, or legal disputes. In North Macedonia this means requesting an extract from the cadastre (imotno-pravna evidencija). Do this yourself or through your lawyer — never take the seller's word for it.\n\nPhysical inspection: hire a structural engineer for anything over twenty years old or showing visible cracks, damp patches, or roof damage. The cost is €200–400 and can save you from a six-figure repair.\n\nPlanning permissions: verify that any extensions or conversions were built with the necessary permits. Unpermitted structures can prevent you from reselling and may attract fines.\n\nUtility arrears: ask for the last twelve months of utility bills and confirm there are no outstanding balances. These can transfer to the new owner."],
+            ['title' => 'How Rising Interest Rates Are Reshaping the Market', 'category' => 'Market Trends',
+                'excerpt' => 'Higher rates change who can buy, at what price, and how long properties sit unsold.',
+                'body' => "When interest rates rise, the monthly payment on a given mortgage increases — which reduces how much a buyer can borrow for the same monthly outlay. A buyer who could afford a €150,000 mortgage at 2.5% may only qualify for €120,000 at 4.5%. This compression of purchasing power puts downward pressure on prices in rate-sensitive segments.\n\nThe effect is not uniform. Cash buyers — who account for a larger share of the market in the Balkans than in Western Europe — are unaffected. Luxury properties, where buyers are less leveraged, hold value better than mid-market apartments bought primarily with financing.\n\nFor sellers: expect longer days-on-market and more negotiation. For buyers: higher rates create an opportunity to negotiate prices that were previously out of reach. The key discipline is stress-testing your affordability at rates 2% higher than your current offer — because fixed-rate periods end."],
+        ];
+
+        foreach ($postData as $index => $data) {
+            Post::create([
+                'title' => $data['title'],
+                'excerpt' => $data['excerpt'],
+                'body' => $data['body'],
+                'category' => $data['category'],
+                'featured_image' => 'https://picsum.photos/seed/blog-'.($index + 1).'/800/500',
+                'author_id' => $index % 2 === 0 ? $agent->id : $agent2->id,
+                'published_at' => Carbon::now()->subDays($index * 7 + rand(0, 6)),
+            ]);
+        }
     }
 }

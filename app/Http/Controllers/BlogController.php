@@ -2,22 +2,38 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Post;
+use Illuminate\Http\Request;
+
 class BlogController extends Controller
 {
-    // v1 is deliberately static — no Post model, no migration, no CMS. See
-    // plan `2026-08-11-batch-2-extension-items-10-14.md` § "Item 13 — Blog +
-    // Single Post" for the scope call. Route names (`blog.index`, `blog.show`)
-    // are used everywhere so a future dynamic upgrade is a URL-compatible swap.
     public function index()
     {
-        return view('blog.index');
+        $posts = Post::published()->latest('published_at')->paginate(6);
+        $categories = Post::published()->select('category')->distinct()->pluck('category');
+        $recentPosts = Post::published()->latest('published_at')->take(3)->get();
+
+        return view('blog.index', compact('posts', 'categories', 'recentPosts'));
     }
 
-    public function show()
+    public function show(Post $post)
     {
-        // Single fixed demo post — the template ships filler for both pages,
-        // and the plan explicitly says "a single hard-coded slug is enough
-        // for the demo link; do not build a real slug-routing table".
-        return view('blog.show');
+        abort_if($post->published_at === null || $post->published_at->isFuture(), 404);
+        $post->load('author', 'comments.user');
+        $categories = Post::published()->select('category')->distinct()->pluck('category');
+        $recentPosts = Post::published()->where('id', '!=', $post->id)->latest('published_at')->take(3)->get();
+
+        return view('blog.show', compact('post', 'categories', 'recentPosts'));
+    }
+
+    public function storeComment(Request $request, Post $post)
+    {
+        $request->validate(['body' => 'required|string|min:2|max:2000']);
+        $post->comments()->create([
+            'user_id' => auth()->id(),
+            'body' => $request->body,
+        ]);
+
+        return back()->with('success', 'Comment posted.');
     }
 }
