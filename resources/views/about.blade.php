@@ -60,6 +60,7 @@
             <p class="text-center">No agents to show yet.</p>
         @else
             {{-- Two rows of two, matching the template's 2×(col-md-6 → 2×col-sm-6) grid. --}}
+            <div class="row">
             @foreach($agents->chunk(2) as $pair)
                 <div class="col-md-6">
                     <ul class="row">
@@ -90,6 +91,7 @@
                     </ul>
                 </div>
             @endforeach
+            </div>
         @endif
     </div>
 </section>
