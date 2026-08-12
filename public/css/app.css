@@ -45,3 +45,20 @@ footer { padding-top: 60px; }
     position: relative;
     overflow: hidden;
 }
+
+/* --- Batch 5, Issue 2: uniform card height regardless of title/description length --- */
+.properties li .detail-sec {
+    min-height: 160px;
+}
+.properties li .detail-sec > a.font-montserrat {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+.properties li .detail-sec > p {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
