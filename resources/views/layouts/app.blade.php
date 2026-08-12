@@ -19,6 +19,38 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet" type="text/css">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('styles')
+    <style>
+    /* Batch 4 — uniform photo sizing */
+    /* Property cards: landscape crop */
+    .properties li section .img img,
+    .properties li section > img.img-responsive {
+        height: 220px;
+        width: 100%;
+        object-fit: cover;
+        display: block;
+    }
+    /* Service section card images */
+    .services li section > img.img-responsive {
+        height: 200px;
+        width: 100%;
+        object-fit: cover;
+        display: block;
+    }
+    /* Recent-properties sidebar thumbs */
+    ul.recent-come li .img-post img {
+        height: 64px;
+        width: 80px;
+        object-fit: cover;
+    }
+    /* Team/agent photos */
+    #team .team > img.img-responsive,
+    .team > img.img-responsive {
+        height: 260px;
+        width: 100%;
+        object-fit: cover;
+        display: block;
+    }
+    </style>
 </head>
 <body>
 <div id="wrap" class="home-1">

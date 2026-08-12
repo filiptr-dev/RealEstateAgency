@@ -17,29 +17,6 @@ use Throwable;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Stable Unsplash photo IDs used to seed realistic listing imagery.
-     * The URL pattern `images.unsplash.com/photo-{id}` returns the raw image,
-     * so we can save it directly to the public disk without an API key.
-     */
-    private const PHOTO_IDS = [
-        '1564013799919-ab600027ffc6', // modern living room
-        '1600596542815-ffad4c1539a9', // house exterior
-        '1512917774080-9991f1c4c750', // luxury home
-        '1560184897-ae75f418493e',    // apartment interior
-        '1493809842364-78817add7ffb', // cozy living space
-        '1571460149396-84b0d1e64cb1', // kitchen
-        '1484154218962-a197022b5858', // bedroom
-        '1600607687939-ce8a6c25118c', // modern kitchen
-        '1604014237800-1c9102c219da', // pool villa
-        '1558618666-fcd25c85cd64',    // terrace
-        '1613490493576-4d03d3299386', // luxury apartment
-        '1568605114967-8130f3a36994', // house with garden
-        '1583608205776-bfd35f0d9f83', // suburban home
-        '1598928506311-c55ded91a20c', // modern bathroom
-        '1596436508249-61fd99b596a8', // cozy bedroom
-    ];
-
     public function run(): void
     {
         // Idempotency: wipe listings and their child rows so re-seeding is safe.
@@ -373,9 +350,40 @@ class DatabaseSeeder extends Seeder
         // image so seeding still succeeds. Either way we always create the
         // PropertyPhoto rows so the DB state is deterministic.
         $disk = Storage::disk('public');
-        $photoIds = self::PHOTO_IDS;
-        $photoIdCount = count($photoIds);
         $poolCount = count($photoPool);
+
+        // ---- Agent photos (deterministic picsum seeds) ------------------------
+        $agentsDir = storage_path('app/public/agents');
+        if (is_dir($agentsDir)) {
+            File::deleteDirectory($agentsDir);
+        }
+        File::makeDirectory($agentsDir, 0755, true, true);
+
+        foreach ([$agent, $agent2] as $a) {
+            $agentDir = storage_path("app/public/agents/{$a->id}");
+            if (! is_dir($agentDir)) {
+                File::makeDirectory($agentDir, 0755, true);
+            }
+            $rel = "agents/{$a->id}/photo.jpg";
+            $abs = $agentDir.DIRECTORY_SEPARATOR.'photo.jpg';
+            $written = false;
+            try {
+                $response = Http::timeout(15)->get("https://picsum.photos/seed/agent-{$a->id}/400/500");
+                if ($response->successful() && $response->body() !== '') {
+                    $disk->put($rel, $response->body());
+                    $written = true;
+                }
+            } catch (Throwable $e) {
+                // fall through to bundled fallback
+            }
+            if (! $written) {
+                $fallback = public_path('images/agent-'.($a->id % 4 + 1).'.jpg');
+                if (is_file($fallback)) {
+                    @copy($fallback, $abs);
+                }
+            }
+            $a->update(['photo_path' => 'storage/'.$rel]);
+        }
 
         foreach ($properties as $i => $property) {
             $storageDir = storage_path("app/public/properties/{$property->id}");
@@ -390,9 +398,8 @@ class DatabaseSeeder extends Seeder
 
                 $written = false;
 
-                // Try Unsplash first.
-                $photoId = $photoIds[($i * 3 + $n) % $photoIdCount];
-                $url = "https://images.unsplash.com/photo-{$photoId}?w=1200&q=80&fit=crop";
+                // Try picsum first — deterministic seed, pinned landscape 800×500.
+                $url = "https://picsum.photos/seed/property-{$property->id}-{$n}/800/500";
                 try {
                     $response = Http::timeout(15)->get($url);
                     if ($response->successful() && $response->body() !== '') {
