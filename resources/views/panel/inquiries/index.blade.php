@@ -3,22 +3,46 @@
 @section('title', 'Inquiries')
 
 @section('content')
-    <h1>Inquiries</h1>
-    <table class="table" style="width:100%;background:#fff;">
-        <thead><tr><th>From</th><th>Property</th><th>Subject</th><th>Received</th><th></th></tr></thead>
-        <tbody>
-        @forelse($submissions as $submission)
-            <tr style="{{ $submission->read_at ? '' : 'font-weight:bold;' }}">
-                <td>{{ $submission->name }}<br><small>{{ $submission->email }}</small></td>
-                <td>{{ $submission->property?->title ?? '—' }}</td>
-                <td>{{ $submission->subject ?? '(no subject)' }}</td>
-                <td>{{ $submission->created_at->diffForHumans() }} {!! $submission->read_at ? '' : '<span style="color:#c00;">(new)</span>' !!}</td>
-                <td><a href="{{ route('panel.inquiries.show', $submission) }}">Open</a></td>
-            </tr>
-        @empty
-            <tr><td colspan="5">No inquiries yet.</td></tr>
-        @endforelse
-        </tbody>
-    </table>
+    <h4 class="panel-section-title">Inquiries</h4>
+
+    <div class="panel-card panel-card-flush">
+        <table class="panel-table">
+            <thead>
+                <tr>
+                    <th>Status</th>
+                    <th>From</th>
+                    <th>Property</th>
+                    <th>Subject</th>
+                    <th>Received</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            @forelse($submissions as $submission)
+                <tr>
+                    <td>
+                        @if($submission->read_at)
+                            <span class="panel-badge panel-badge-read">Read</span>
+                        @else
+                            <span class="panel-badge panel-badge-unread">Unread</span>
+                        @endif
+                    </td>
+                    <td>
+                        <span class="panel-cell-title">{{ $submission->name }}</span><br>
+                        <small style="color:#999;">{{ $submission->email }}</small>
+                    </td>
+                    <td>{{ $submission->property?->title ?? '—' }}</td>
+                    <td>{{ $submission->subject ?? '(no subject)' }}</td>
+                    <td>{{ $submission->created_at->diffForHumans() }}</td>
+                    <td>
+                        <a class="panel-action-view" href="{{ route('panel.inquiries.show', $submission) }}">View</a>
+                    </td>
+                </tr>
+            @empty
+                <tr><td colspan="6">No inquiries yet.</td></tr>
+            @endforelse
+            </tbody>
+        </table>
+    </div>
     <div>{{ $submissions->links() }}</div>
 @endsection

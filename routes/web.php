@@ -59,6 +59,8 @@ Route::middleware(['auth', 'role:admin,agent'])
         Route::resource('properties', Admin\PropertyController::class)->except(['show']);
         Route::get('inquiries', [Admin\InquiryController::class, 'index'])->name('inquiries.index');
         Route::get('inquiries/{submission}', [Admin\InquiryController::class, 'show'])->name('inquiries.show');
+        // Blog admin — index only for this batch. Full CRUD deferred to a future batch.
+        Route::get('blog', [Admin\BlogController::class, 'index'])->name('blog.index');
     });
 
 // Admin-only user management.
