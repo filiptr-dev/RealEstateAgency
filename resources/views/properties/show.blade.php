@@ -107,3 +107,17 @@
     </div>
 </section>
 @endsection
+
+@push('scripts')
+<script>
+$(document).ready(function () {
+    if ($('.main-slider').length) {
+        $('.main-slider').flexslider({
+            animation: 'slide',
+            controlNav: true,
+            directionNav: true
+        });
+    }
+});
+</script>
+@endpush

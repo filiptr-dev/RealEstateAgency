@@ -121,6 +121,7 @@ class DatabaseSeeder extends Seeder
                 'price_cents' => 12500000, 'bedrooms' => 2, 'bathrooms' => 1, 'size_acres' => 68.00,
                 'address' => 'Ul. Orce Nikolov 145', 'zip' => '1000', 'city' => 'Skopje', 'country' => 'North Macedonia',
                 'area' => 'Debar Maalo',
+                'lat' => 41.9961, 'lng' => 21.4316,
                 'features' => ['Balcony', 'Central heating', 'Elevator', 'Parking', 'Renovated kitchen'],
                 'nearby' => [
                     ['label' => 'City Park', 'distance_km' => 0.4],
@@ -136,6 +137,7 @@ class DatabaseSeeder extends Seeder
                 'price_cents' => 42000000, 'bedrooms' => 5, 'bathrooms' => 4, 'size_acres' => 320.00,
                 'address' => 'Kej Marshal Tito 88', 'zip' => '6000', 'city' => 'Ohrid', 'country' => 'North Macedonia',
                 'area' => 'Old Town Waterfront',
+                'lat' => 41.1172, 'lng' => 20.8016,
                 'features' => ['Private dock', 'Swimming pool', 'Garden', 'Lake view', 'Fireplace', 'Garage'],
                 'nearby' => [
                     ['label' => 'Ohrid Old Bazaar', 'distance_km' => 0.8],
@@ -151,6 +153,7 @@ class DatabaseSeeder extends Seeder
                 'price_cents' => 35000, 'bedrooms' => 1, 'bathrooms' => 1, 'size_acres' => 32.00,
                 'address' => 'Ul. Makedonija 24', 'zip' => '1000', 'city' => 'Skopje', 'country' => 'North Macedonia',
                 'area' => 'Centar',
+                'lat' => 41.9968, 'lng' => 21.4317,
                 'features' => ['Furnished', 'Air conditioning', 'Wi-Fi included', 'Balcony'],
                 'nearby' => [
                     ['label' => 'Macedonia Square', 'distance_km' => 0.2],
@@ -166,6 +169,7 @@ class DatabaseSeeder extends Seeder
                 'price_cents' => 21500000, 'bedrooms' => 4, 'bathrooms' => 3, 'size_acres' => 210.00,
                 'address' => 'Ul. Jane Sandanski 62', 'zip' => '1000', 'city' => 'Skopje', 'country' => 'North Macedonia',
                 'area' => 'Aerodrom',
+                'lat' => 41.9680, 'lng' => 21.4624,
                 'features' => ['Garden', 'Garage', 'Central heating', 'Storage room', 'Solar water heater'],
                 'nearby' => [
                     ['label' => 'City Mall', 'distance_km' => 1.5],
@@ -181,6 +185,7 @@ class DatabaseSeeder extends Seeder
                 'price_cents' => 45000, 'bedrooms' => 2, 'bathrooms' => 1, 'size_acres' => 74.00,
                 'address' => 'Sirok Sokak 51', 'zip' => '7000', 'city' => 'Bitola', 'country' => 'North Macedonia',
                 'area' => 'Sirok Sokak',
+                'lat' => 41.0297, 'lng' => 21.3291,
                 'features' => ['Furnished', 'High ceilings', 'Original woodwork', 'Central heating'],
                 'nearby' => [
                     ['label' => 'Sirok Sokak Promenade', 'distance_km' => 0.1],
@@ -196,6 +201,7 @@ class DatabaseSeeder extends Seeder
                 'price_cents' => 14800000, 'bedrooms' => 3, 'bathrooms' => 2, 'size_acres' => 165.00,
                 'address' => 'Ul. Ilindenska 118', 'zip' => '1200', 'city' => 'Tetovo', 'country' => 'North Macedonia',
                 'area' => 'Poroj',
+                'lat' => 41.0090, 'lng' => 20.9710,
                 'features' => ['Mountain view', 'Terrace', 'Garden', 'Fireplace', 'Parking'],
                 'nearby' => [
                     ['label' => 'Popova Sapka Ski Resort', 'distance_km' => 18.0],
@@ -211,6 +217,7 @@ class DatabaseSeeder extends Seeder
                 'price_cents' => 38000, 'bedrooms' => 1, 'bathrooms' => 1, 'size_acres' => 48.00,
                 'address' => 'Ul. 11 Oktomvri 7', 'zip' => '1300', 'city' => 'Kumanovo', 'country' => 'North Macedonia',
                 'area' => 'Centar',
+                'lat' => 42.1322, 'lng' => 21.7144,
                 'features' => ['Furnished', 'New appliances', 'Air conditioning', 'Balcony'],
                 'nearby' => [
                     ['label' => 'Kumanovo Central Park', 'distance_km' => 0.3],
@@ -226,6 +233,7 @@ class DatabaseSeeder extends Seeder
                 'price_cents' => 9800000, 'bedrooms' => 3, 'bathrooms' => 2, 'size_acres' => 140.00,
                 'address' => 'Ul. Marshal Tito 39', 'zip' => '6330', 'city' => 'Struga', 'country' => 'North Macedonia',
                 'area' => 'Old Struga',
+                'lat' => 41.1786, 'lng' => 20.6783,
                 'features' => ['Stone facade', 'Courtyard', 'Original beams', 'Wood stove'],
                 'nearby' => [
                     ['label' => 'Struga Poetry Bridge', 'distance_km' => 0.6],
@@ -241,6 +249,7 @@ class DatabaseSeeder extends Seeder
                 'price_cents' => 4800000, 'bedrooms' => 0, 'bathrooms' => 0, 'size_acres' => 1200.00,
                 'address' => 'Regional Road P-1104', 'zip' => '7500', 'city' => 'Prilep', 'country' => 'North Macedonia',
                 'area' => 'Industrial Zone North',
+                'lat' => 41.3461, 'lng' => 21.5544,
                 'features' => ['Utilities on plot', 'Road access', 'Zoned residential/commercial'],
                 'nearby' => [
                     ['label' => 'Prilep Ring Road', 'distance_km' => 0.4],
@@ -256,6 +265,7 @@ class DatabaseSeeder extends Seeder
                 'price_cents' => 85000, 'bedrooms' => 3, 'bathrooms' => 2, 'size_acres' => 96.00,
                 'address' => 'Ul. Ivan Agovski 12', 'zip' => '1000', 'city' => 'Skopje', 'country' => 'North Macedonia',
                 'area' => 'Karpos 4',
+                'lat' => 41.9980, 'lng' => 21.3780,
                 'features' => ['Terrace', 'Parking', 'Air conditioning', 'Central heating', 'Storage'],
                 'nearby' => [
                     ['label' => 'Vodno cable car', 'distance_km' => 2.8],
@@ -271,6 +281,7 @@ class DatabaseSeeder extends Seeder
                 'price_cents' => 39500000, 'bedrooms' => 5, 'bathrooms' => 4, 'size_acres' => 380.00,
                 'address' => 'Ul. Praska 8', 'zip' => '1000', 'city' => 'Skopje', 'country' => 'North Macedonia',
                 'area' => 'Vodno',
+                'lat' => 41.9659, 'lng' => 21.3979,
                 'features' => ['Swimming pool', 'Garden', 'Garage for two', 'Home office', 'Underfloor heating', 'City view'],
                 'nearby' => [
                     ['label' => 'Millennium Cross viewpoint', 'distance_km' => 3.5],
@@ -286,6 +297,7 @@ class DatabaseSeeder extends Seeder
                 'price_cents' => 70000, 'bedrooms' => 1, 'bathrooms' => 1, 'size_acres' => 52.00,
                 'address' => 'Odos Katouni 14', 'zip' => '54625', 'city' => 'Thessaloniki', 'country' => 'Greece',
                 'area' => 'Ladadika',
+                'lat' => 40.6401, 'lng' => 22.9444,
                 'features' => ['Furnished', 'Air conditioning', 'Sea view', 'Elevator'],
                 'nearby' => [
                     ['label' => 'Aristotelous Square', 'distance_km' => 0.5],
@@ -301,6 +313,7 @@ class DatabaseSeeder extends Seeder
                 'price_cents' => 18900000, 'bedrooms' => 2, 'bathrooms' => 2, 'size_acres' => 82.00,
                 'address' => 'Ul. Graf Ignatiev 45', 'zip' => '1000', 'city' => 'Sofia', 'country' => 'Bulgaria',
                 'area' => 'Centre',
+                'lat' => 42.6977, 'lng' => 23.3219,
                 'features' => ['Renovated', 'Parking', 'Elevator', 'Central heating', 'Wooden floors'],
                 'nearby' => [
                     ['label' => 'Vitosha Boulevard', 'distance_km' => 0.4],
@@ -316,6 +329,7 @@ class DatabaseSeeder extends Seeder
                 'price_cents' => 6200000, 'bedrooms' => 0, 'bathrooms' => 0, 'size_acres' => 3400.00,
                 'address' => 'Village of Kosel', 'zip' => '6000', 'city' => 'Ohrid', 'country' => 'North Macedonia',
                 'area' => 'Kosel',
+                'lat' => 41.0700, 'lng' => 20.7420,
                 'features' => ['Road access', 'Water source', 'Fenced', 'Existing orchard'],
                 'nearby' => [
                     ['label' => 'Ohrid Airport', 'distance_km' => 4.5],
@@ -331,6 +345,7 @@ class DatabaseSeeder extends Seeder
                 'price_cents' => 120000, 'bedrooms' => 4, 'bathrooms' => 2, 'size_acres' => 180.00,
                 'address' => 'Ul. Kiro Krstevski 22', 'zip' => '1000', 'city' => 'Skopje', 'country' => 'North Macedonia',
                 'area' => 'Gjorche Petrov',
+                'lat' => 41.9945, 'lng' => 21.3614,
                 'features' => ['Garden', 'Garage', 'Central heating', 'Furnished', 'Pet-friendly'],
                 'nearby' => [
                     ['label' => 'Gjorche Petrov Municipality', 'distance_km' => 0.8],

@@ -17,6 +17,7 @@
     <link href="{{ asset('css/font-awesome.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/bootstrap-select.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet" type="text/css">
+    @stack('styles')
 </head>
 <body>
 <div id="wrap" class="home-1">

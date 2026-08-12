@@ -94,6 +94,17 @@
             </div>
         </div>
 
+        <div class="row">
+            <div class="col-sm-6">
+                <label>Latitude (optional)</label>
+                <input type="number" step="any" min="-90" max="90" name="lat" value="{{ old('lat', $property->lat) }}" class="form-control" placeholder="e.g. 41.9961">
+            </div>
+            <div class="col-sm-6">
+                <label>Longitude (optional)</label>
+                <input type="number" step="any" min="-180" max="180" name="lng" value="{{ old('lng', $property->lng) }}" class="form-control" placeholder="e.g. 21.4316">
+            </div>
+        </div>
+
         <div class="form-group">
             <label>Features (one per line)</label>
             @php

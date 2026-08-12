@@ -119,6 +119,8 @@ class PropertyController extends Controller
             'city' => $data['city'],
             'country' => $data['country'],
             'area' => $data['area'] ?? null,
+            'lat' => isset($data['lat']) && $data['lat'] !== '' ? (float) $data['lat'] : null,
+            'lng' => isset($data['lng']) && $data['lng'] !== '' ? (float) $data['lng'] : null,
             'features' => $data['features'] ?? [],
             'nearby' => $data['nearby'] ?? [],
             'is_featured' => (bool) ($data['is_featured'] ?? false),
