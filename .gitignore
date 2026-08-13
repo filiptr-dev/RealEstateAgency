@@ -25,3 +25,6 @@ _ide_helper.php
 Homestead.json
 Homestead.yaml
 Thumbs.db
+
+# Local academy dossier (symbiosis-brain) — not part of this repo
+projects/
