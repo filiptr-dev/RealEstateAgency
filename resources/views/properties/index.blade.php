@@ -2,6 +2,10 @@
 
 @section('title', 'Properties')
 
+@push('styles')
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+@endpush
+
 @section('content')
 <section class="inner-banner" style="background:#333;padding:80px 0;color:#fff;text-align:center;">
     <div class="container"><h1>All Properties</h1></div>
@@ -30,6 +34,7 @@
 @endsection
 
 @push('scripts')
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV/XN/WLs=" crossorigin=""></script>
 <script>window.mapProperties = {!! json_encode($mapProperties, JSON_HEX_TAG) !!};</script>
 <script>
 $(document).ready(function () {
