@@ -8,7 +8,7 @@
     <section>
         <div class="img">
             @if($cover)
-                <img class="img-responsive" src="{{ asset('storage/'.$cover->path) }}" alt="{{ $property->title }}">
+                <img class="img-responsive" src="{{ $cover->url }}" alt="{{ $property->title }}">
             @else
                 <img class="img-responsive" src="{{ asset('images/img-1.jpg') }}" alt="{{ $property->title }}">
             @endif

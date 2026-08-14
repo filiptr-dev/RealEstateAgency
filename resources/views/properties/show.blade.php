@@ -17,7 +17,7 @@
                 <div class="flexslider main-slider">
                     <ul class="slides">
                         @foreach($property->photos as $photo)
-                            <li><img src="{{ asset('storage/'.$photo->path) }}" alt="{{ $property->title }}"></li>
+                            <li><img src="{{ $photo->url }}" alt="{{ $property->title }}"></li>
                         @endforeach
                         @if($property->photos->isEmpty())
                             <li><img src="{{ asset('images/img-1.jpg') }}" alt=""></li>
@@ -92,7 +92,7 @@
                             @php $rCover = $r->coverPhoto(); @endphp
                             <li>
                                 @if($rCover)
-                                    <div class="img-post"><img src="{{ asset('storage/'.$rCover->path) }}" alt=""></div>
+                                    <div class="img-post"><img src="{{ $rCover->url }}" alt=""></div>
                                 @endif
                                 <div class="text-post">
                                     <a href="{{ route('properties.show', $r) }}">{{ $r->title }}</a>

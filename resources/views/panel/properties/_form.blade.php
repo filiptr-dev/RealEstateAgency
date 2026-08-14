@@ -127,7 +127,7 @@
             <ul style="list-style:none;padding:0;">
                 @foreach($property->photos as $photo)
                     <li style="margin-bottom:10px;">
-                        <img src="{{ asset('storage/'.$photo->path) }}" style="width:100%;">
+                        <img src="{{ $photo->url }}" style="width:100%;">
                         <label><input type="checkbox" name="delete_photo_ids[]" value="{{ $photo->id }}"> Delete</label>
                         @if($photo->is_cover) <span>(cover)</span> @endif
                     </li>

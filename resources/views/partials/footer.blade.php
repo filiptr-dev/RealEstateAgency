@@ -52,7 +52,7 @@
                         @php $cover = $recent->coverPhoto(); @endphp
                         <li>
                             @if($cover)
-                                <div class="img-post"><img src="{{ asset('storage/'.$cover->path) }}" alt=""></div>
+                                <div class="img-post"><img src="{{ $cover->url }}" alt=""></div>
                             @endif
                             <div class="text-post">
                                 <a href="{{ route('properties.show', $recent) }}">{{ $recent->title }}</a>
